@@ -1,4 +1,3 @@
-#include <optional>
 
 #include <torch/extension.h>
 #include <c10/util/ArrayRef.h>
@@ -13,6 +12,11 @@ void quant_pack_out(
     const torch::Tensor &input,
     torch::Tensor &output,
     torch::Tensor &scale);
+
+void act_scale_pack_out(
+    const torch::Tensor& act,
+    const torch::Tensor& scale,
+    torch::Tensor& output);
 
 void silu_out(const torch::Tensor & input,
               torch::Tensor & output);
@@ -69,6 +73,7 @@ TORCH_LIBRARY(async_compute, m) {
     m.def("rope_forward_impl(Tensor x, Tensor freqs_cis, Tensor(a!) output) -> ()");
     m.def("rope_backward_impl(Tensor grad_output, Tensor freqs_cis, Tensor(b!) grad_x) -> ()");
     m.def("random_uniform(Tensor data, float low, float high) -> ()");
+    m.def("act_scale_pack_out(Tensor act, Tensor scale, Tensor(a!) output) -> ()");
 }
 
 TORCH_LIBRARY_IMPL(async_compute, CPU, m) {
@@ -86,4 +91,5 @@ TORCH_LIBRARY_IMPL(async_compute, CPU, m) {
     m.impl("rope_forward_impl", &rope_forward_impl);
     m.impl("rope_backward_impl", &rope_backward_impl);
     m.impl("random_uniform", &random_uniform);
+    m.impl("act_scale_pack_out", &act_scale_pack_out);
 }

@@ -5,9 +5,7 @@
 #include <cstddef>
 #include <cstring>
 #include <algorithm>
-#include <iostream>
 #include <stdexcept>
-#include <vector>
 
 #include <torch/python.h>
 

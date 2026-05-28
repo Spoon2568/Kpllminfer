@@ -62,7 +62,7 @@ def build_torch_library(
     if not source_dir.exists():
         raise FileNotFoundError(f"source directory not found: {source_dir}")
 
-    cc_files = sorted(str(p) for p in source_dir.glob("*.cc"))
+    cc_files = sorted(str(p) for p in source_dir.rglob("*.cc"))
     cc_files.extend(str(p) for p in extra_sources)
     if not cc_files:
         raise FileNotFoundError(f"No .cc files found in: {source_dir}")
